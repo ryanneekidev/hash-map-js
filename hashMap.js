@@ -4,6 +4,8 @@ class HashMap{
         this.mapSize = mapSize;
         this.mapCapacity = mapSize;
         this.mapLoad = 0;
+        this.keys = [];
+        this.values = []
     }
 
     calculateHash(key){
@@ -28,8 +30,10 @@ class HashMap{
     addNode(key, value){
         if(this.getLoad() < this.getCapacity()){
             let hashCode = this.calculateHash(key);
-            let index = hashCode % 16;
+            let index = hashCode % this.getCapacity();
             this.map[index] = {key: key, value: value};
+            this.keys[index] = key;
+            this.values[index] = value; 
             this.mapLoad+=1;
             console.log(`Added value [ ${value} ] with key [ ${key} ] and hash [ ${hashCode} ] at index [ ${index} ]`)
         } else {
@@ -39,7 +43,7 @@ class HashMap{
     }
 
     getNode(key){
-        let index = this.calculateHash(key) % 16;
+        let index = this.calculateHash(key) % this.getCapacity();
         if (this.map[index]) {
             return this.map[index].value;
         } else {
@@ -48,7 +52,7 @@ class HashMap{
     }
 
     hasNode(key){
-        let index = this.calculateHash(key) % 16;
+        let index = this.calculateHash(key) % this.getCapacity();
         if (this.map[index]) {
             return true;
         } else {
@@ -58,8 +62,10 @@ class HashMap{
 
     removeNode(key){
         if (this.hasNode(key)) {
-            let index = this.calculateHash(key) % 16;
+            let index = this.calculateHash(key) % this.getCapacity();
             this.map[index] = undefined;
+            this.keys[index] = undefined;
+            this.values[index] = undefined; 
             this.mapLoad-=1;
             return true;
         } else {
@@ -68,41 +74,22 @@ class HashMap{
     }
 
     mapLength(){
-        let length = 0;
-        for (let i=0;i<this.map.length;i++) {
-            if (this.map[i]) {
-                length++;
-            }
-        }
-        return length;
+        return this.getLoad();
     }
 
     clearMap(){
-        for (let i=0;i<this.map.length;i++) {
-            if (this.map[i]) {
-                this.map[i] = undefined;
-            }
-        }
+        this.map = [];
+        this.keys = [];
+        this.values = [];
+        this.mapLoad = 0;
     }
 
     getKeys(){
-        let keys = [];
-        for (let i=0;i<this.map.length;i++) {
-            if (this.map[i]) {
-                keys.push(this.map[i].key);
-            }
-        }
-        return keys;
+        return this.keys;
     }
 
     getValues(){
-        let values = [];
-        for (let i=0;i<this.map.length;i++) {
-            if (this.map[i]) {
-                values.push(this.map[i].value);
-            }
-        }
-        return values;
+        return this.values;
     }
 
     getEntries(){

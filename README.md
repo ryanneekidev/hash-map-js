@@ -4,7 +4,7 @@ A simple implementation of the hash map data structure in JavaScript
 # Getting started
 Create an instance of the hash map by using the `HashMap` class.
 ```js
-class myHashMap = new HashMap();
+const myHashMap = new HashMap();
 ```
 # Functions
 ## calculateHash(key)
